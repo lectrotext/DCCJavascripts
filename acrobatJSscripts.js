@@ -166,12 +166,12 @@ function findActionDice(cClass, lvl) {
 function findCritDice(cClass, lvl) {
     // buliding the dice chains
     var genericCrit = createDiceChain(8,16, false);
-    var wizCrit = createDiceChain(8,14,false);
+    var wizCrit = createDiceChain(7,14,false); //hacky because d7 appears before d6; replaced below
     var dwarfCrit = createDiceChain(10);
     var warriorCrit = createDiceChain(12);
     var thiefCrit = dwarfCrit;
-    // Adding the last step as I don't think that's a responsibility of the diceChain factory
-    wizCrit.splice(0,0,6);
+    // Adding the last steps as I don't think that's a responsibility of the diceChain factory
+    wizCrit[0] = 6;
     dwarfCrit.push("2d20");
     warriorCrit.push("2d20");
 
@@ -255,8 +255,12 @@ function findAttack(cClass, lvl) {
             var plus = Number(lvl) - 6;
             val = diceChain[6] + "+" + plus;
         }
+    } else if (cClass == 'Halfling') {
+        val = lvl;
+        if (lvl >= 3) { val -= 1; }
+        if (lvl >= 7) { val -= 1; }
     } else {
-        val = lvl - 1;
+        val = lvl -1;
         if (lvl >= 4) { val -= 1; }
         if (lvl >= 8) { val -= 1; }
     }
