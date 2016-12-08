@@ -164,19 +164,19 @@ function findActionDice(cClass, lvl) {
  * @returns {string}
  */
 function findCritDice(cClass, lvl) {
-    var genericCases = ['Cleric','Halfling','Thief'];
     // buliding the dice chains
     var genericCrit = createDiceChain(8,16, false);
     var wizCrit = createDiceChain(6,14,false);
-    var dwarfCrit = createDiceChain(10,30);
-    var warriorCrit = createDiceChain(12,30);
+    var dwarfCrit = createDiceChain(10);
+    var warriorCrit = createDiceChain(12);
+    var thiefCrit = dwarfCrit;
     // Adding the last step as I don't think that's a responsibility of the diceChain factory
     dwarfCrit.push("2d20");
     warriorCrit.push("2d20");
 
     var val = '';
 
-    if (genericCases.indexOf(cClass) > -1) {
+    if (cClass == 'Cleric' || cClass == 'Halfling') {
         val = "1d" + genericCrit[Math.floor((lvl - 1) / 2)];
     } else {
         if (cClass == 'Elf') {
@@ -211,6 +211,14 @@ function findCritDice(cClass, lvl) {
                 }
             }
         }
+        if (cClass == 'Thief') {
+            if (lvl < 8) {
+                val = thiefCrit[lvl - 1];
+            } else {
+                var plus = (Number(lvl) - 7) * 2;
+                val = thiefCrit[6] + "+" + plus;
+            }
+        }
     }
     return val;
 }
@@ -237,24 +245,18 @@ function findAttack(cClass, lvl) {
         }
     } else if (cClass == 'Elf') {
         val = Math.ceil(lvl/2);
-    } else if (cClass == 'Warrior') {
-
+    } else if (cClass == 'Warrior' || cClass == 'Dwarf') {
+        if (lvl < 7) {
+            val = diceChain[lvl-1];
+        } else {
+            var plus = Number(lvl) - 6;
+            val = diceChain[6] + "+" + plus;
+        }
     } else {
         val = lvl - 1;
         if (lvl >= 4) { val -= 1; }
         if (lvl >= 8) { val -= 1; }
     }
-
-    // Fighter & Dwarf
-
-
-    if (lvl < 7) {
-        val = diceChain[lvl-1];
-    } else {
-        var plus = Number(lvl) - 6;
-        val = diceChain[6] + "+" + plus;
-    }
-
     return val;
 }
 
