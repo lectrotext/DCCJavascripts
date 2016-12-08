@@ -34,10 +34,15 @@ function createDiceChain(to, from, add1d) {
 
 
 if (event.willCommit) {
+  // The dropdown event value from the Level field is what runs the show.
   var lvl = event.value;
-  var cTitle = this.getField("Title");
+  // Data points needed to be able to process all the functions.
+  var cClass = this.getField("Class").value;
+  var luckySign = this.getField("LuckySign").value;
   var alignment = this.getField("Alignment").value;
-  
+  // Fields affected by the Level changed event. 
+  var cTitle = this.getField("Title");
+  // @todo start making functions
 //=-----= TITLE =-----=
   var titlesList = {
     chaotic: [
