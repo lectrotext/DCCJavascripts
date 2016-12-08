@@ -166,11 +166,12 @@ function findActionDice(cClass, lvl) {
 function findCritDice(cClass, lvl) {
     // buliding the dice chains
     var genericCrit = createDiceChain(8,16, false);
-    var wizCrit = createDiceChain(6,14,false);
+    var wizCrit = createDiceChain(8,14,false);
     var dwarfCrit = createDiceChain(10);
     var warriorCrit = createDiceChain(12);
     var thiefCrit = dwarfCrit;
     // Adding the last step as I don't think that's a responsibility of the diceChain factory
+    wizCrit.splice(0,0,6);
     dwarfCrit.push("2d20");
     warriorCrit.push("2d20");
 
@@ -233,7 +234,9 @@ function findAttack(cClass, lvl) {
     var diceChain = createDiceChain(3,10);
 
     if (cClass == 'Wizard') {
-        val = 1;
+        if (lvl > 1) {
+            val = 1;
+        }
         if (lvl >= 5) {
             val = 2;
         }
