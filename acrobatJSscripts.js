@@ -10,8 +10,11 @@ Totally free!
 Tips welcome.
 
 */
+// @todo figure out a build script that will only create a file for each class.
+
 /**
- *
+ * generates a dice chain for any given scenario.  without arguments 1d3-1d30 is returned as an array
+ * of strings.
  * @param to int
  * @param from int
  * @param add1d bool
@@ -125,7 +128,7 @@ function findTitle(cClass, lvl, alignment) {
  * @param cClass character class
  * @returns string
  */
-function findActionDice(cClass) {
+function findActionDice(cClass, lvl) {
     var threeActions = ['Dwarf', 'Elf', 'Warrior', 'Wizard'];
     var val ='';
     if (threeActions.indexOf(cClass) == -1) {
@@ -216,31 +219,6 @@ function findCritDice(cClass, lvl) {
  *
  * @param cClass
  * @param lvl
- * @returns {string}
- */
-function findCritTable(cClass, lvl) {
-    var tableThree = 3;
-    var tableFour = 5;
-    var val = '';
-
-    if (cClass == 'Dwarf') {
-        tableThree++;tableFour++;
-    }
-
-    if (lvl < tableThree) {
-        val = "III";
-    } else if (lvl < tableFour) {
-        val = "IV";
-    } else {
-        val = "V";
-    }
-    return val;
-}
-
-/**
- *
- * @param cClass
- * @param lvl
  */
 function findAttack(cClass, lvl) {
     var val = 0;
@@ -280,7 +258,61 @@ function findAttack(cClass, lvl) {
     return val;
 }
 
+/**
+ *
+ * @param cClass
+ * @param lvl
+ * @returns {string}
+ */
+function findCritTable(cClass, lvl) {
+    var tableThree = 3;
+    var tableFour = 5;
+    var val = '';
 
+    if (cClass == 'Dwarf') {
+        tableThree++;tableFour++;
+    }
+
+    if (lvl < tableThree) {
+        val = "III";
+    } else if (lvl < tableFour) {
+        val = "IV";
+    } else {
+        val = "V";
+    }
+    return val;
+}
+
+/**
+ *
+ * @param lvl
+ * @returns {string}
+ */
+function findLuckDie(lvl) {
+    var diceChain = createDiceChain(3,16);
+    return diceChain[lvl - 1];
+}
+
+/**
+ *
+ * @param lvl
+ * @returns {string}
+ */
+function findCritRange(lvl) {
+    var val = '';
+    if (lvl < 5) {
+        val = "19-20";
+    } else if (lvl < 9) {
+        val = "18-20";
+    } else {
+        val = "17-20";
+    }
+    return val;
+}
+
+// This is the hook that Adobe Acrobat uses to send event update.  If this were to be written for
+// another platform (websites, etc.), the implementation would be dependent on the architecture of
+// that platform.
 if (event.willCommit) {
     // The drop-down event value from the Level field is what runs the show.
     var lvl = event.value;
@@ -293,13 +325,22 @@ if (event.willCommit) {
     var actionDice = this.getField("ActionDice");
     var attack = this.getField("Attack");
     var critDie = this.getField("CritDie");
-    var critTable = this.getField("CritTable");
-    // Functional programming.
+    // Setting values with functional programming.
     cTitle.value = findTitle(cClass, lvl, alignment);
-    actionDice.value = findActionDice(cClass);
+    actionDice.value = findActionDice(cClass, lvl);
     attack.value = findAttack(cClass, lvl);
     critDie.value = findCritDice(cClass, lvl);
+    // Situational updates - class based.
     if (cClass == 'Dwarf' || cClass == 'Warrior') {
+        var critTable = this.getField("CritTable");
         critTable.value = findCritTable(cClass, lvl);
+    }
+    if (cClass == 'Warrior') {
+        var critRange = this.getField("CritRange");
+        critRange.value = findCritRange(lvl);
+    }
+    if (cClass == 'Thief') {
+        var luckDie = this.getField("LuckDie");
+        luckDie.value = findLuckDie(lvl);
     }
 }
