@@ -98,14 +98,14 @@ if (event.willCommit) {
   // Dwarf & Fighter
   // Fighter removes 1d10 from the list and lower the starting tier by one level (6 & 8).
   var critDie = this.getField("CritDie");
-  var zocciDice = ["1d10","1d12","1d14","1d16","1d20","1d24","1d30","2d20"];
+  var diceChain = ["1d10","1d12","1d14","1d16","1d20","1d24","1d30","2d20"];
   if (lvl < 7) {
-    critDie.value = zocciDice[lvl-1];
+    critDie.value = diceChain[lvl-1];
   } else {
     if (lvl < 9) {
-      critDie.value = zocciDice[6];
+      critDie.value = diceChain[6];
     } else {
-      critDie.value = zocciDice[7];
+      critDie.value = diceChain[7];
     }
   }
 
@@ -132,12 +132,12 @@ if (event.willCommit) {
   
   // Fighter & Dwarf
   var attack = this.getField("Attack");
-  var zocciDice = ["1d3","1d4","1d5","1d6","1d7","1d8","1d10"];
+  var diceChain = ["1d3","1d4","1d5","1d6","1d7","1d8","1d10"];
   if (lvl < 7) {
-    attack.value = zocciDice[lvl-1];
+    attack.value = diceChain[lvl-1];
   } else {
     var plus = Number(lvl) - 6;
-    attack.value = zocciDice[6] + "+" + plus;
+    attack.value = diceChain[6] + "+" + plus;
   }
   
 //=-----= CRIT TABLE =-----=  
