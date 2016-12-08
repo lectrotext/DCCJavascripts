@@ -10,6 +10,13 @@ Totally free!
 Tips welcome.
 
 */
+/**
+ *
+ * @param to int
+ * @param from int
+ * @param add1d bool
+ * @returns {Array}
+ */
 function createDiceChain(to, from, add1d) {
     // Default parameter values
     to = typeof to !== 'undefined' ? to : 3;
@@ -32,152 +39,267 @@ function createDiceChain(to, from, add1d) {
     return diceChain;
 }
 
+/**
+ * @param cClass character class
+ * @param lvl character level
+ * @param alignment character alignment
+ * @returns {string}
+ */
+function findTitle(cClass, lvl, alignment) {
+    var clericTitleList = {
+        chaotic: ["Zealot", "Convert", "Cultist", "Apostle", "High priest"],
+        lawful: ["Acolyte", "Heathen-slayer", "Brother", "Curate", "Father"],
+        neutral: ["Witness", "Pupil", "Chronicler", "Judge", "Druid"]
+    };
+    var elfTitleList = ["Wanderer", "Seer", "Quester", "Savant", "Elder"];
+    var dwarfTitleList = {
+        chaotic: ["Rebel", "Dissident", "Exile", "Iconoclast", "Renegade"],
+        lawful: ["Agent", "Broker", "Delegate", "Envoy", "Syndic"],
+        neutral: ["Apprentice", "Novice", "Journeyer", "Crafter", "Thegn"]
+    };
+    var halflingTitleList = ["Wanderer", "Explorer", "Collector", "Accumulator"];
+    var thiefTitleList = {
+        chaotic: ["Thug", "Murderer", "Cutthroat", "Executioner", "Assassin"],
+        lawful: ["Bravo", "Apprentice", "Rogue", "Capo", "Boss"],
+        neutral: ["Beggar", "Cutpurse", "Burglar", "Robber", "Swindler"]
+    };
+    var warriorTitleList = {
+        chaotic: ["Bandit", "Brigand", "Marauder", "Ravager", "Reaver"],
+        lawful: ["Squire", "Champion", "Knight", "Cavalier", "Paladin"],
+        neutral: ["Wildling", "Barbarian", "Berserker", "Headman/Headwoman", "Chieftain"]
+    };
+    var wizardTitleList = {
+        chaotic: ["Cultist", "Shaman", "Diabolist", "Warlock/Witch", "Necromancer"],
+        lawful: ["Evoker", "Controller", "Conjurer", "Summoner", "Elementalist"],
+        neutral: ["Astrologist", "Enchanter", "Magician", "Thaumaturgist", "Sorcerer"]
+    };
+    var titles = [];
+    var titleList = [];
+    switch (cClass) {
+        case 'Cleric':
+            titleList = clericTitleList;
+            break;
+        case 'Elf':
+            titles = elfTitleList;
+            break;
+        case 'Dwarf':
+            titleList = dwarfTitleList;
+            break;
+        case 'Halfling':
+            titles = halflingTitleList;
+            break;
+        case 'Thief':
+            titleList = thiefTitleList;
+            break;
+        case 'Warrior':
+            titleList = warriorTitleList;
+            break;
+        case 'Wizard':
+            titleList = wizardTitleList;
+            break;
+        default:
+            titleList = [];
+    }
+
+    if (cClass != 'Elf' && cClass != 'Halfling') {
+        if (alignment == 'Chaotic') {
+            titles = titleList.chaotic;
+        } else if (alignment == 'Lawful') {
+            titles = titleList.lawful;
+        } else {
+            titles = titleList.neutral;
+        }
+    }
+
+    var val = '';
+    if (lvl >=5) {
+        val = titles[4];
+    } else if (lvl < 5) {
+        val = titles[lvl-1];
+    }
+    return val;
+}
+
+/**
+ *
+ * @param cClass character class
+ * @returns string
+ */
+function findActionDice(cClass) {
+    var threeActions = ['Dwarf', 'Elf', 'Warrior', 'Wizard'];
+    var val ='';
+    if (threeActions.indexOf(cClass) == -1) {
+        if (lvl < 6) {
+            val = "1d20";
+        } else if (lvl == 6) {
+            val = "1d20 + 1d14";
+        } else if (lvl == 7) {
+            val = "1d20 + 1d16";
+        } else {
+            val = "1d20 + 1d20";
+        }
+    } else if (threeActions.indexOf(cClass) > -1) {
+        if (lvl < 5) {
+            val = "1d20";
+        } else if (lvl == 5) {
+            val = "1d20 + 1d14";
+        } else if (lvl == 6) {
+            val = "1d20 + 1d16";
+        } else if (lvl < 10) {
+            val = "1d20 + 1d20";
+        } else {
+            val = "1d20+1d20+1d14";
+        }
+    }
+    return val;
+}
+
+/**
+ *
+ * @param cClass character class
+ * @param lvl character lvl
+ * @returns {string}
+ */
+function findCritDice(cClass, lvl) {
+    var genericCases = ['Cleric','Halfling','Thief'];
+    // buliding the dice chains
+    var genericCrit = createDiceChain(8,16, false);
+    var wizCrit = createDiceChain(6,14,false);
+    var dwarfCrit = createDiceChain(10,30);
+    var warriorCrit = createDiceChain(12,30);
+    // Adding the last step as I don't think that's a responsibility of the diceChain factory
+    dwarfCrit.push("2d20");
+    warriorCrit.push("2d20");
+
+    var val = '';
+
+    if (genericCases.indexOf(cClass) > -1) {
+        val = "1d" + genericCrit[Math.floor((lvl - 1) / 2)];
+    } else {
+        if (cClass == 'Elf') {
+            if (lvl == 1) {
+                val = "1d6";
+            } else {
+                val = "1d" + genericCrit[Math.floor((lvl - 2) / 2)];
+            }
+        }
+        if (cClass == 'Wizard') {
+            val = "1d" + wizCrit[Math.floor((lvl - 1) / 2)];
+        }
+        if (cClass == 'Dwarf') {
+            if (lvl < 7) {
+                val = dwarfCrit[lvl - 1];
+            } else {
+                if (lvl < 9) {
+                    val = dwarfCrit[6];
+                } else {
+                    val = dwarfCrit[7];
+                }
+            }
+        }
+        if (cClass == 'Warrior') {
+            if (lvl < 6) {
+                val = warriorCrit[lvl - 1];
+            } else {
+                if (lvl < 8) {
+                    val = warriorCrit[5];
+                } else {
+                    val = warriorCrit[6];
+                }
+            }
+        }
+    }
+    return val;
+}
+
+/**
+ *
+ * @param cClass
+ * @param lvl
+ * @returns {string}
+ */
+function findCritTable(cClass, lvl) {
+    var tableThree = 3;
+    var tableFour = 5;
+    var val = '';
+
+    if (cClass == 'Dwarf') {
+        tableThree++;tableFour++;
+    }
+
+    if (lvl < tableThree) {
+        val = "III";
+    } else if (lvl < tableFour) {
+        val = "IV";
+    } else {
+        val = "V";
+    }
+    return val;
+}
+
+/**
+ *
+ * @param cClass
+ * @param lvl
+ */
+function findAttack(cClass, lvl) {
+    var val = 0;
+    var diceChain = createDiceChain(3,10);
+
+    if (cClass == 'Wizard') {
+        val = 1;
+        if (lvl >= 5) {
+            val = 2;
+        }
+        if (lvl >= 7) {
+            val = 3;
+        }
+        if (lvl >= 9) {
+            val = 4;
+        }
+    } else if (cClass == 'Elf') {
+        val = Math.ceil(lvl/2);
+    } else if (cClass == 'Warrior') {
+
+    } else {
+        val = lvl - 1;
+        if (lvl >= 4) { val -= 1; }
+        if (lvl >= 8) { val -= 1; }
+    }
+
+    // Fighter & Dwarf
+
+
+    if (lvl < 7) {
+        val = diceChain[lvl-1];
+    } else {
+        var plus = Number(lvl) - 6;
+        val = diceChain[6] + "+" + plus;
+    }
+
+    return val;
+}
+
 
 if (event.willCommit) {
-  // The dropdown event value from the Level field is what runs the show.
-  var lvl = event.value;
-  // Data points needed to be able to process all the functions.
-  var cClass = this.getField("Class").value;
-  var luckySign = this.getField("LuckySign").value;
-  var alignment = this.getField("Alignment").value;
-  // Fields affected by the Level changed event. 
-  var cTitle = this.getField("Title");
-  // @todo start making functions
-//=-----= TITLE =-----=
-  var titlesList = {
-    chaotic: [
-      "Zealot",
-      "Convert",
-      "Cultist",
-      "Apostle",
-      "High priest"
-    ],
-    lawful: [
-      "Acolyte",
-      "Heathen-slayer",
-      "Brother",
-      "Curate",
-      "Father"
-    ],
-    neutral: [
-      "Witness",
-      "Pupil",
-      "Chronicler",
-      "Judge",
-      "Druid"
-    ]
-  };
-
-  if (alignment == 'Chaotic') {
-    titles = titlesList.chaotic;
-  } else if (alignment == 'Lawful') {
-    titles = titlesList.lawful;
-  } else {
-    titles = titlesList.neutral;
-  }
-  if (lvl >=5) {
-    cTitle.value = titles[4];
-  } else if (lvl < 5) {
-    cTitle.value = titles[lvl-1];
-  }
-  
-//=-----= ACTION DICE =-----=
-  // Cleric, Elf, Halfling, Thief use this action dice progression.
-  var actionDice = this.getField("ActionDice");
-  if (lvl < 6) {
-    actionDice.value = "1d20";
-  } else if (lvl == 6) {
-    actionDice.value = "1d20 + 1d14";
-  } else if (lvl == 7) {
-    actionDice.value = "1d20 + 1d16";
-  } else {
-    actionDice.value = "1d20 + 1d20";
-  }
-  // Dwarf, Elf, Warrior & Wizard
-  var actionDice = this.getField("ActionDice");
-  if (lvl < 5) {
-    actionDice.value = "1d20";
-  } else if (lvl == 5) {
-    actionDice.value = "1d20 + 1d14";
-  } else if (lvl == 6) {
-    actionDice.value = "1d20 + 1d16";
-  } else if (lvl < 10){
-    actionDice.value = "1d20 + 1d20";
-  } else {
-    actionDice.value = "1d20+1d20+1d14";
-  }
-
-//=-----= CRIT DIE =-----=
-  // Thief, Cleric, Halfling, Wizard and Elf use this progression.
-  // Wizard starts with a d6 in the array 
-  var critDie = this.getField("CritDie");
-  var critDice = [8,10,12,14,16];
-  var wizCrit = [6,8,10,12,14];
-  critDie.value = "1d" + critDice[Math.floor((lvl-1)/2)];
-  
-  // Elf
-  var critDie = this.getField("CritDie");
-  var critDice = [8,10,12,14,16];
-  if (lvl == 1) {
-    critDie.value = "1d6";
-  } else {
-    critDie.value = "1d" + critDice[Math.floor((lvl-2)/2)];
-  }
-  
-  // Dwarf & Fighter
-  // Fighter removes 1d10 from the list and lower the starting tier by one level (6 & 8).
-  var critDie = this.getField("CritDie");
-  var diceChain = ["1d10","1d12","1d14","1d16","1d20","1d24","1d30","2d20"];
-  if (lvl < 7) {
-    critDie.value = diceChain[lvl-1];
-  } else {
-    if (lvl < 9) {
-      critDie.value = diceChain[6];
-    } else {
-      critDie.value = diceChain[7];
+    // The drop-down event value from the Level field is what runs the show.
+    var lvl = event.value;
+    // Data points needed to be able to process all the functions.
+    var cClass = this.getField("Class").value;
+    var luckySign = this.getField("LuckySign").value;
+    var alignment = this.getField("Alignment").value;
+    // Fields affected by the Level changed event.
+    var cTitle = this.getField("Title");
+    var actionDice = this.getField("ActionDice");
+    var attack = this.getField("Attack");
+    var critDie = this.getField("CritDie");
+    var critTable = this.getField("CritTable");
+    // Functional programming.
+    cTitle.value = findTitle(cClass, lvl, alignment);
+    actionDice.value = findActionDice(cClass);
+    attack.value = findAttack(cClass, lvl);
+    critDie.value = findCritDice(cClass, lvl);
+    if (cClass == 'Dwarf' || cClass == 'Warrior') {
+        critTable.value = findCritTable(cClass, lvl);
     }
-  }
-
-//=------= ATTACK =------= 
-  // Thief, Cleric Progression.  
-  // Halflings are based off this too. val starts at lvl. Decrements occur at lvl 3 & 7.
-  var attack = this.getField("Attack");
-  var val = lvl - 1;
-  if (lvl >= 4) { val -= 1; }
-  if (lvl >= 8) { val -= 1; }
-  attack.value = val;
-  
-  // Wizard
-  var attack = this.getField("Attack");  
-  var val = 1;
-  if (lvl >= 5) { val = 2; }
-  if (lvl >= 7) { val = 3; }
-  if (lvl >= 9) { val = 4; }
-  attack.value = val;
-  
-  // Elf
-  var attack = this.getField("Attack");
-  attack.value = Math.ceil(lvl/2);
-  
-  // Fighter & Dwarf
-  var attack = this.getField("Attack");
-  var diceChain = ["1d3","1d4","1d5","1d6","1d7","1d8","1d10"];
-  if (lvl < 7) {
-    attack.value = diceChain[lvl-1];
-  } else {
-    var plus = Number(lvl) - 6;
-    attack.value = diceChain[6] + "+" + plus;
-  }
-  
-//=-----= CRIT TABLE =-----=  
-  // Crit Table Dwarves.
-  // Warriors tiers start 1 lvl lower (3 & 5)
-  var critTable = this.getField("CritTable");
-  if (lvl < 4) {
-    critTable.value = "III";
-  } else if (lvl < 6) {
-    critTable.value = "IV";
-  } else {
-    critTable.value = "V";
-  }  
 }
