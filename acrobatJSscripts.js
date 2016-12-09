@@ -166,7 +166,7 @@ function findActionDice(cClass, lvl) {
 function findCritDice(cClass, lvl) {
     // buliding the dice chains
     var genericCrit = createDiceChain(8,16, false);
-    var wizCrit = createDiceChain(7,14,false); //hacky because d7 appears before d6; replaced below
+    var wizCrit = createDiceChain(7,14,false); //hack because d7 appears before d6; replaced below
     var dwarfCrit = createDiceChain(10);
     var warriorCrit = createDiceChain(12);
     var thiefCrit = dwarfCrit;
