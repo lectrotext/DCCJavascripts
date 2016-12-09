@@ -7,8 +7,7 @@
 function findCritDice(cClass, lvl) {
     // buliding the dice chains
     var genericCrit = createDiceChain(8,16, false);
-    var wizCrit = createDiceChain(7,14,false); //hack because d7
-appears before d6; replaced below
+    var wizCrit = createDiceChain(7,14,false); //hack because d7 appears before d6; replaced below
     var dwarfCrit = createDiceChain(10);
     var warriorCrit = createDiceChain(12);
     var thiefCrit = dwarfCrit;
@@ -27,8 +26,7 @@ appears before d6; replaced below
             if (lvl == 1) {
                 val = "1d6";
             } else {
-                val = "1d" + genericCrit[Math.floor((lvl - 2) /
-2)];
+                val = "1d" + genericCrit[Math.floor((lvl - 2) / 2)];
             }
         }
         if (cClass == 'Wizard') {

@@ -19,10 +19,8 @@ function createDiceChain(to, from, add1d) {
       return "1d" + item;
     }
     // creating return
-    if (values.indexOf(to) != -1 && values.indexOf(from) != -1)
-{
-      diceChain = values.slice(values.indexOf(to),
-values.indexOf(from)+1);
+    if (values.indexOf(to) != -1 && values.indexOf(from) != -1) {
+      diceChain = values.slice(values.indexOf(to), values.indexOf(from)+1);
     }
     if (add1d) {
       diceChain = diceChain.map(addString1d);
