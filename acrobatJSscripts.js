@@ -163,8 +163,9 @@ function findActionDice(cClass, lvl) {
  * @param lvl character lvl
  * @returns {string}
  */
-function findCritDice(cClass, lvl) {
+function findCritDice(cClass, lvl, luckyCheck) {
     // buliding the dice chains
+    var luckPlus = null;
     var genericCrit = createDiceChain(8,16, false);
     var wizCrit = createDiceChain(7,14,false); //hack because d7 appears before d6; replaced below
     var dwarfCrit = createDiceChain(10);
@@ -212,15 +213,39 @@ function findCritDice(cClass, lvl) {
                 }
             }
         }
+        if (luckyCheck.isCritTableSign() && luckyCheck.luckMod != 0) {
+            luckPlus = luckyCheck.luckMod;
+        }
         if (cClass == 'Thief') {
             if (lvl < 8) {
                 val = thiefCrit[lvl - 1];
+                if (luckPlus > 0) {
+                    val += "+" + luckPlus;
+                } else {
+                    val += luckPlus;
+                }
             } else {
                 var plus = (Number(lvl) - 7) * 2;
+                if (luckPlus != undefined) {
+                    plus += Number(luckPlus);
+                }
                 val = thiefCrit[6] + "+" + plus;
             }
         }
     }
+
+
+
+    if (luckPlus != undefined) {
+        if (cClass != 'Thief' && lvl <8) {
+            if (luckPlus > 0) {
+                val += "+" + luckPlus;
+            } else {
+                val += luckPlus;
+            }
+        }
+    }
+
     return val;
 }
 
@@ -319,6 +344,89 @@ function findCritRange(lvl) {
     return val;
 }
 
+function LuckySign(luckySign) {
+    this.luckySign = luckySign;
+    this.luckMod = 0;
+    this.luckySigns = [1,2,3,10,11,17,20,21,22,24,26,30];
+
+    this.isLucky = function()  {
+        return (this.luckySigns.indexOf(luckySign) != -1);
+    };
+
+    this.isAttackBonusSign = function() {
+        return (
+            this.isAllAtkSign() ||
+            this.isMeleeAtkSign() ||
+            this.isRangeAtkSign()
+        );
+    };
+
+    this.isAllAtkSign = function() {
+        return (this.luckySign == 1);
+    };
+
+    this.isMeleeAtkSign = function() {
+        return (this.luckySign == 2);
+    };
+
+    this.isRangeAtkSign = function() {
+        return (this.luckySign == 3);
+    };
+
+    this.isThiefSkillSign = function() {
+        return (
+            this.isAllSkillsSign() ||
+            this.isTrapsSign()
+        );
+    };
+
+    this.isAllSkillsSign = function() {
+        return (this.luckySign == 10);
+    };
+
+    this.isTrapsSign = function() {
+        return (this.luckySign == 11);
+    };
+
+    this.isSavingThrowSign = function() {
+        return (
+            this.isAllSavesSign() ||
+            this.isFortSavesSign() ||
+            this.isRefSavesSigns() ||
+            this.isWillSavesSign()
+        );
+    };
+
+    this.isAllSavesSign = function() {
+        return (this.luckySign == 17);
+    };
+
+    this.isFortSavesSign = function() {
+        return (this.luckySign == 20);
+    };
+
+    this.isRefSavesSign = function() {
+        return (this.luckySign == 21);
+    };
+
+    this.isWillSavesSign = function() {
+        return (this.luckySign == 22);
+    };
+
+    this.isInitiativeSign = function() {
+        return (this.luckySign ==24);
+    };
+
+    this.isCritTableSign = function() {
+        return (this.luckySign ==26);
+    };
+
+    this.isSpeedSign = function() {
+        return (this.luckySign ==30);
+    };
+}
+
+
 // This is the hook that Adobe Acrobat uses to send event update.  If this were to be written for
 // another platform (websites, etc.), the implementation would be dependent on the architecture of
 // that platform.
@@ -327,7 +435,11 @@ if (event.willCommit) {
     var lvl = event.value;
     // Data points needed to be able to process all the functions.
     var cClass = this.getField("Class").value;
-    var luckySign = this.getField("LuckySign").value;
+    // this is the export value ie - numeric
+    var luckyCheck = new LuckySign(this.getField("LuckySign").value);
+    if (luckyCheck.isLucky()) {
+        luckyCheck.luckMod = this.getField("BirthLuckModifer").value;
+    }
     var alignment = this.getField("Alignment").value;
     // Fields affected by the Level changed event.
     var cTitle = this.getField("Title");
@@ -338,11 +450,11 @@ if (event.willCommit) {
     cTitle.value = findTitle(cClass, lvl, alignment);
     actionDice.value = findActionDice(cClass, lvl);
     attack.value = findAttack(cClass, lvl);
-    critDie.value = findCritDice(cClass, lvl);
+    critDie.value = findCritDice(cClass, lvl, luckyCheck);
     // Situational updates - class based.
     if (cClass == 'Dwarf' || cClass == 'Warrior') {
         var critTable = this.getField("CritTable");
-        critTable.value = findCritTable(cClass, lvl);
+        critTable.value = findCritTable(cClass, lvl, luckyCheck);
     }
     if (cClass == 'Warrior') {
         var critRange = this.getField("CritRange");
