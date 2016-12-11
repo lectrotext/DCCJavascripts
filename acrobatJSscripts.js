@@ -219,10 +219,12 @@ function findCritDice(cClass, lvl, luckyCheck) {
         if (cClass == 'Thief') {
             if (lvl < 8) {
                 val = thiefCrit[lvl - 1];
-                if (luckPlus > 0) {
-                    val += "+" + luckPlus;
-                } else {
-                    val += luckPlus;
+                if (luckPlus != undefined) {
+                    if (luckPlus > 0) {
+                        val += "+" + luckPlus;
+                    } else {
+                        val += luckPlus;
+                    }
                 }
             } else {
                 var plus = (Number(lvl) - 7) * 2;
