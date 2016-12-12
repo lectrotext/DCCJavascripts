@@ -28,7 +28,6 @@ function Dwarf() {
     };
     this.critTable = function(lvl) {
         var val = '';
-
         if (lvl < 4) {
             val = "III";
         } else if (lvl < 6) {
@@ -38,8 +37,8 @@ function Dwarf() {
         }
         return val;
     };
-    this.titleByAlignment = function(alignment) {
-        var titles = [];
+    this.getTitleList = function(alignment) {
+        var titleList = [];
         if (alignment == 'Chaotic') {
             titles = this.titles.chaotic;
         } else if (alignment == 'Lawful') {
@@ -47,10 +46,10 @@ function Dwarf() {
         } else if (alignment == 'Neutral') {
             titles = this.titles.neutral;
         }
-
         return titles;
     };
     this.attack = function(lvl) {
+        var val = '';
         var attackChain = createDiceChain(3,10);
         if (lvl < 7) {
             val = attackChain[lvl-1];
