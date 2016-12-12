@@ -1,4 +1,4 @@
-function Character() = {
+function Character() {
     this.isClass = function(c) {
         return this.cClass == c;
     };
@@ -11,7 +11,7 @@ function Character() = {
         }
         return val;
     };
-    this.actionDice = funtion() {
+    this.actionDice = function() {
         var threeActions = ['Dwarf', 'Elf', 'Warrior', 'Wizard'];
         var val ='';
         if (threeActions.indexOf(this.cClass) == -1) {
