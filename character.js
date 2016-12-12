@@ -1,5 +1,5 @@
 function Character() = {
-    this.getTitle = function(titles, lvl) {
+    this.findTitle = function(titles, lvl) {
         var val = '';
         if (lvl >=5) {
             val = titles[4];

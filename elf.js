@@ -24,16 +24,6 @@ function Elf(lvl) {
     this.getTitleList = function() {
         return this.titles;
     };
-    this.getTitle = function() {
-        var titles = this.getTitleList();
-        var val = '';
-        if (this.lvl >=5) {
-            val = titles[4];
-        } else if (this.lvl < 5) {
-            val = titles[this.lvl-1];
-        }
-        return val;
-    }
     this.attack = function() {
         return Math.ceil(this.lvl/2);
     };
