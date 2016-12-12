@@ -1,5 +1,5 @@
 function LuckySign(luckySign) {
-    this.luckySign = luckySign;
+    this.luckySign = typeof luckySign !== 'undefined' ? luckySign : 1;
     this.luckMod = 0;
     this.luckySigns = [1,2,3,10,11,17,20,21,22,24,26,30];
 

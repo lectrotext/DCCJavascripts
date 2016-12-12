@@ -1,4 +1,7 @@
 function Character() = {
+    this.isClass = function(c) {
+        return this.cClass == c;
+    };
     this.findTitle = function(titles) {
         var val = '';
         if (this.lvl >=5) {
