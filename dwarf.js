@@ -40,13 +40,13 @@ function Dwarf() {
     this.getTitleList = function(alignment) {
         var titleList = [];
         if (alignment == 'Chaotic') {
-            titles = this.titles.chaotic;
+            titleList = this.titles.chaotic;
         } else if (alignment == 'Lawful') {
-            titles = this.titles.lawful;
+            titleList = this.titles.lawful;
         } else if (alignment == 'Neutral') {
-            titles = this.titles.neutral;
+            titleList = this.titles.neutral;
         }
-        return titles;
+        return titleList;
     };
     this.attack = function(lvl) {
         var val = '';
