@@ -56,7 +56,7 @@ function Warrior(lvl, alignment) {
         if (this.lvl < 7) {
             val = attackChain[this.lvl-1];
         } else {
-            var plus = Number() - 6;
+            var plus = Number(this.lvl) - 6;
             val = attackChain[6] + "+" + plus;
         }
         return val;
