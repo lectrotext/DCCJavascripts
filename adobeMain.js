@@ -1,12 +1,3 @@
-/**
- * 1st step is to set up the charcter class that will be used:
- * At runtime we add the Character Class which contains findTitle() and 
- * findActionDice
- * By default the Specific Character class is intialized to Level 1 with
- * Chaotic alignment
- */
-Dwarf.prototype = new Character();
-var character = new Dwarf();
 // This is the hook that Adobe Acrobat uses to send event
 // update.  If this were to be written for
 // another platform (websites, etc.), the implementation would
@@ -28,11 +19,23 @@ if (event.willCommit) {
     var critDie = this.getField("CritDie");
     var critTable = this.getField("CritTable");
     // Setting values with functional programming.
-    cTitle.value = findTitle(character.getTitles(alignment), lvl);
-    actionDice.value = findActionDice(cClass, lvl);
-    attack.value = character.attack(lvl);
-    critDie.value = character.critDice(lvl);
-    critTable.value = character.critTable(lvl);
+    /**
+     * 1st step is to set up the charcter class that will be used:
+     * At runtime we add the Character Class which contains findTitle() and 
+     * findActionDice
+     * By default the Specific Character class is intialized to Level 1 with
+     * Chaotic alignment
+     */
+    Dwarf.prototype = new Character(lvl, alignment);
+    Dwarf.prototype = new Dice();
+    Dwarf.prototype = new LuckySign(luckySign);
+    var character = new Dwarf();
+
+    cTitle.value = character.findTitle(character.titleList());
+    actionDice.value = character.actionDice();
+    attack.value = character.attack();
+    critDie.value = character.critDice();
+    critTable.value = character.critTable();
     // Situational updates - class based.
     if (cClass == 'Warrior') {
         var critRange = this.getField("CritRange");
@@ -42,5 +45,4 @@ if (event.willCommit) {
         var luckDie = this.getField("LuckDie");
         luckDie.value = character.luckDie(lvl);
     }
-
 }
