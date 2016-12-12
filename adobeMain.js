@@ -15,34 +15,24 @@ var character = new Dwarf();
 // be dependent on the architecture of
 // that platform.
 if (event.willCommit) {
+    // Setting up the character object with PDF variables
     // The drop-down event value from the Level field is what
     // runs the show.
     character.lvl = event.value;
-    // Data points needed to be able to process all the
-    // functions.
     character.cClass = this.getField("Class").value;
     character.luckySign = this.getField("LuckySign").value;
     character.alignment = this.getField("Alignment").value;
-    // Fields affected by the Level changed event.
-    var cTitle = this.getField("Title");
-    var actionDice = this.getField("ActionDice");
-    var attack = this.getField("Attack");
-    var critDie = this.getField("CritDie");
-    var critTable = this.getField("CritTable");
-    // setting the character object
     // Setting values with functional programming.
-    cTitle.value = character.findTitle(character.titleList());
-    actionDice.value = character.actionDice();
-    attack.value = character.attack();
-    critDie.value = character.critDice();
-    critTable.value = character.critTable();
+    this.getField("Title").value = character.findTitle(character.titleList());
+    this.getField("ActionDice").value = character.actionDice();
+    this.getField("Attack").value = character.attack();
+    this.getField("CritDie").value = character.critDice();
+    this.getField("CritTable").value = character.critTable();
     // Situational updates - class based.
     if (character.isClass('Warrior')) {
-        var critRange = this.getField("CritRange");
-        critRange.value = character.critRange();
+        this.getField("CritRange").value = character.critRange();
     }
     if (character.isClass('Thief')) {
-        var luckDie = this.getField("LuckDie");
-        luckDie.value = character.luckDie();
+        this.getField("LuckDie").value = character.luckDie();
     }
 }
