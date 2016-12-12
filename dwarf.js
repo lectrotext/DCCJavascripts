@@ -1,4 +1,4 @@
-this.dwarf = function() {
+function Dwarf() {
     this.cClass = "Dwarf";
     this.speed = 20;
     this.saves = {
@@ -49,5 +49,15 @@ this.dwarf = function() {
         }
 
         return titles;
-    }; 
-};
+    };
+    this.attack = function(lvl) {
+        var attackChain = createDiceChain(3,10);
+        if (lvl < 7) {
+            val = attackChain[lvl-1];
+        } else {
+            var plus = Number(lvl) - 6;
+            val = attackChain[6] + "+" + plus;
+        }
+        return val;
+    };
+}
