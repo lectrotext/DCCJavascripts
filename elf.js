@@ -9,10 +9,10 @@ function Elf(lvl) {
     };
     this.titles = ["Wanderer", "Seer", "Quester", "Savant", "Elder"]; 
     this.critDice = function() {
-        var crit = createDiceChain(8,16);
+        var crit = this.chain(8,16);
         var val = '';
         if (this.lvl == 1) {
-            val = "1d6";
+            val = this.stringify(6);
         } else {
             val = crit[Math.floor((this.lvl - 2) / 2)];
         }        

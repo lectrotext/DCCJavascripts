@@ -81,7 +81,7 @@ function Thief(lvl, alignment) {
         }
     };
     this.critDice = function() {
-        var crit = createDiceChain(10);
+        var crit = this.chain(10);
         var val = '';
         if (this.lvl < 8) {
             val = crit[this.lvl - 1];
@@ -112,7 +112,7 @@ function Thief(lvl, alignment) {
         return val;
     };
     this.luckDie = function() {
-        var diceChain = createDiceChain(3,16);
+        var diceChain = this.chain(3,16);
         return diceChain[this.lvl - 1];
     };
 }

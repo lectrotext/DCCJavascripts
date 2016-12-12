@@ -9,7 +9,7 @@ function Halfling(lvl) {
     };
     this.titles = ["Wanderer", "Explorer", "Collector", "Accumulator", "Wise one"]; 
     this.critDice = function(this.lvl) {
-        var crit = createDiceChain(8,16);
+        var crit = this.chain(8,16);
         return crit[Math.floor((this.lvl - 1) / 2)];
     };
     this.critTable = function() {

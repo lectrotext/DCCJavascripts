@@ -14,7 +14,7 @@ function Cleric(lvl, alignment) {
         neutral: ["Witness", "Pupil", "Chronicler", "Judge", "Druid"]
     };
     this.critDice = function() {
-        var crit = createDiceChain(8,16);
+        var crit = this.chain(8,16);
         return crit[Math.floor((this.lvl - 1) / 2)];
     };
     this.critTable = function() {

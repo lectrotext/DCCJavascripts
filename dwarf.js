@@ -14,7 +14,7 @@ function Dwarf(lvl, alignment) {
         neutral: ["Apprentice", "Novice", "Journeyer", "Crafter", "Thegn"]
     };
     this.critDice = function() {
-        var crit = createDiceChain(10);
+        var crit = this.chain(10);
         crit.push("2d20");
         var val = '';
         if (this.lvl < 7) {
@@ -52,7 +52,7 @@ function Dwarf(lvl, alignment) {
     };
     this.attack = function() {
         var val = '';
-        var attackChain = createDiceChain(3,10);
+        var attackChain = this.chain(3,10);
         if (this.lvl < 7) {
             val = attackChain[this.lvl-1];
         } else {

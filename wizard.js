@@ -14,8 +14,8 @@ function Wizard(lvl, alignment) {
         neutral: ["Astrologist", "Enchanter", "Magician", "Thaumaturgist", "Sorcerer"]
     };
     this.critDice = function() {
-        var crit = createDiceChain(7,14);
-        crit[0] = "1d6"
+        var crit = this.chain(7,14);
+        crit[0] = this.stringify(6);
         return crit[Math.floor((this.lvl - 1) / 2)];
     };
     this.critTable = function() {
