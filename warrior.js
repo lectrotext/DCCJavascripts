@@ -1,5 +1,7 @@
-function Warrior() {
+function Warrior(lvl, alignment) {
     this.cClass = "Warrior";
+    this.lvl = typeof lvl !== 'undefined' ? lvl : 1;
+    this.alignment = typeof alignment !== 'undefined' ? alignment : "Chaotic";
     this.speed = 30;
     this.saves = {
         ref: [1,1,1,2,2,2,3,3,3,4],
@@ -11,14 +13,14 @@ function Warrior() {
         lawful: ["Squire", "Champion", "Knight", "Cavalier", "Paladin"],
         neutral: ["Wildling", "Barbarian", "Berserker", "Headman/Headwoman", "Chieftain"]
     };
-    this.critDice = function(lvl) {
+    this.critDice = function() {
         var crit = createDiceChain(10);
         crit.push("2d20");
         var val = '';
-        if (lvl < 6) {
-            val = crit[lvl - 1];
+        if (this.lvl < 6) {
+            val = crit[this.lvl - 1];
         } else {
-            if (lvl < 8) {
+            if (this.lvl < 8) {
                 val = crit[6];
             } else {
                 val = crit[7];
@@ -26,44 +28,44 @@ function Warrior() {
         }
         return val;
     };
-    this.critTable = function(lvl) {
+    this.critTable = function() {
         var val = '';
-        if (lvl < 3) {
+        if (this.lvl < 3) {
             val = "III";
-        } else if (lvl < 5) {
+        } else if (this.lvl < 5) {
             val = "IV";
         } else {
             val = "V";
         }
         return val;
     };
-    this.getTitleList = function(alignment) {
+    this.titleList = function() {
         var titleList = [];
-        if (alignment == 'Chaotic') {
+        if (this.alignment == 'Chaotic') {
             titleList = this.titles.chaotic;
-        } else if (alignment == 'Lawful') {
+        } else if (this.alignment == 'Lawful') {
             titleList = this.titles.lawful;
-        } else if (alignment == 'Neutral') {
+        } else if (this.alignment == 'Neutral') {
             titleList = this.titles.neutral;
         }
         return titleList;
     };
-    this.attack = function(lvl) {
+    this.attack = function() {
         var val = '';
         var attackChain = createDiceChain(3,10);
-        if (lvl < 7) {
-            val = attackChain[lvl-1];
+        if (this.lvl < 7) {
+            val = attackChain[this.lvl-1];
         } else {
-            var plus = Number(lvl) - 6;
+            var plus = Number() - 6;
             val = attackChain[6] + "+" + plus;
         }
         return val;
     };
-    this.critRange = function(lvl) {
+    this.critRange = function() {
         var val = '';
-        if (lvl < 5) {
+        if (this.lvl < 5) {
             val = "19-20";
-        } else if (lvl < 9) {
+        } else if (this.lvl < 9) {
             val = "18-20";
         } else {
             val = "17-20";

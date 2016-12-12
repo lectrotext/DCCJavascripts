@@ -13,17 +13,17 @@ function Dwarf(lvl, alignment) {
         lawful: ["Agent", "Broker", "Delegate", "Envoy", "Syndic"],
         neutral: ["Apprentice", "Novice", "Journeyer", "Crafter", "Thegn"]
     };
-    this.crit = createDiceChain(10);
-    this.crit.push("2d20");
     this.critDice = function() {
+        var crit = createDiceChain(10);
+        crit.push("2d20");
         var val = '';
         if (this.lvl < 7) {
-            val = this.crit[this.lvl - 1];
+            val = crit[this.lvl - 1];
         } else {
             if (this.lvl < 9) {
-                val = this.crit[6];
+                val = crit[6];
             } else {
-                val = this.crit[7];
+                val = crit[7];
             }
         }
         return val;
@@ -39,7 +39,7 @@ function Dwarf(lvl, alignment) {
         }
         return val;
     };
-    this.getTitleList = function() {
+    this.titleList = function() {
         var titleList = [];
         if (this.alignment == 'Chaotic') {
             titleList = this.titles.chaotic;
@@ -50,16 +50,6 @@ function Dwarf(lvl, alignment) {
         }
         return titleList;
     };
-    this.getTitle = function() {
-        var titles = this.getTitleList();
-        var val = ''; 
-        if (this.lvl >=5) {
-            val = titles[4];
-        } else if (this.lvl < 5) {
-            val = titles[this.lvl-1];
-        }   
-        return val;
-    }
     this.attack = function() {
         var val = '';
         var attackChain = createDiceChain(3,10);

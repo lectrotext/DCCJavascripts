@@ -94,7 +94,7 @@ function Thief(lvl, alignment) {
     this.critTable = function() {
         return "II";
     };
-    this.getTitleList = function() {
+    this.titleList = function() {
         var titleList = [];
         if (this.alignment == 'Chaotic') {
             titleList = this.titles.chaotic;

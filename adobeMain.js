@@ -1,6 +1,11 @@
 /**
  * 1st step is to set up the charcter class that will be used:
+ * At runtime we add the Character Class which contains findTitle() and 
+ * findActionDice
+ * By default the Specific Character class is intialized to Level 1 with
+ * Chaotic alignment
  */
+Dwarf.prototype = new Character();
 var character = new Dwarf();
 // This is the hook that Adobe Acrobat uses to send event
 // update.  If this were to be written for

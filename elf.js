@@ -21,7 +21,7 @@ function Elf(lvl) {
     this.critTable = function() {
         return "II";
     };
-    this.getTitleList = function() {
+    this.titleList = function() {
         return this.titles;
     };
     this.attack = function() {
