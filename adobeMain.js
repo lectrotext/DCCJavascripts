@@ -1,3 +1,7 @@
+/**
+ * 1st step is to set up the charcter class that will be used:
+ */
+var character = new Dwarf();
 // This is the hook that Adobe Acrobat uses to send event
 // update.  If this were to be written for
 // another platform (websites, etc.), the implementation would
@@ -17,23 +21,21 @@ if (event.willCommit) {
     var actionDice = this.getField("ActionDice");
     var attack = this.getField("Attack");
     var critDie = this.getField("CritDie");
+    var critTable = this.getField("CritTable");
     // Setting values with functional programming.
-    cTitle.value = findTitle(cClass, lvl, alignment);
+    cTitle.value = findTitle(character.getTitles(alignment), lvl);
     actionDice.value = findActionDice(cClass, lvl);
-    attack.value = findAttack(cClass, lvl);
-    critDie.value = findCritDice(cClass, lvl);
+    attack.value = character.attack(lvl);
+    critDie.value = character.critDice(lvl);
+    critTable.value = character.critTable(lvl);
     // Situational updates - class based.
-    if (cClass == 'Dwarf' || cClass == 'Warrior') {
-        var critTable = this.getField("CritTable");
-        critTable.value = findCritTable(cClass, lvl);
-    }
     if (cClass == 'Warrior') {
         var critRange = this.getField("CritRange");
-        critRange.value = findCritRange(lvl);
+        critRange.value = character.critRange(lvl);
     }
     if (cClass == 'Thief') {
         var luckDie = this.getField("LuckDie");
-        luckDie.value = findLuckDie(lvl);
+        luckDie.value = character.luckDie(lvl);
     }
 
 }
