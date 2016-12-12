@@ -1,5 +1,6 @@
 function Thief() {
     this.cClass = "Thief";
+    this.lvl = null;
     this.speed = 30;
     this.saves = {
         ref: [1,1,2,2,3,4,4,5,5,6],
@@ -78,14 +79,14 @@ function Thief() {
             neutral: ["d12","d12","14","d14","d16","d16","d20","d20","d20","d20"]
         }
     };
-    this.critDice = function(lvl) {
+    this.critDice = function() {
         var crit = createDiceChain(10);
         var val = '';
-        if (lvl < 8) {
-            val = thiefCrit[lvl - 1];
+        if (this.lvl < 8) {
+            val = crit[this.lvl - 1];
         } else {
-            var plus = (Number(lvl) - 7) * 2;
-            val = thiefCrit[6] + "+" + plus;
+            var plus = (Number(this.lvl) - 7) * 2;
+            val = crit[6] + "+" + plus;
         }
         return val;
     };
@@ -103,14 +104,14 @@ function Thief() {
         }
         return titleList;
     };
-    this.attack = function(lvl) {
-        var val = lvl -1;
-        if (lvl >= 4) { val -= 1; }
-        if (lvl >= 8) { val -= 1; }
+    this.attack = function() {
+        var val = this.lvl -1;
+        if (this.lvl >= 4) { val -= 1; }
+        if (this.lvl >= 8) { val -= 1; }
         return val;
     };
-    this.luckDie = function(lvl) {
+    this.luckDie = function() {
         var diceChain = createDiceChain(3,16);
-        return diceChain[lvl - 1];
+        return diceChain[this.lvl - 1];
     };
 }
