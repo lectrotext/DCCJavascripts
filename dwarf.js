@@ -1,5 +1,7 @@
-function Dwarf() {
+function Dwarf(lvl, alignment) {
     this.cClass = "Dwarf";
+    this.lvl = typeof lvl !== 'undefined' ? lvl : 1;
+    this.alignment = typeof alignment !== 'undefined' ? alignment : "Chaotic";
     this.speed = 20;
     this.saves = {
         ref: [1,1,1,2,2,2,3,3,3,4],
@@ -13,12 +15,12 @@ function Dwarf() {
     };
     this.crit = createDiceChain(10);
     this.crit.push("2d20");
-    this.critDice = function(lvl) {
+    this.critDice = function() {
         var val = '';
-        if (lvl < 7) {
-            val = this.crit[lvl - 1];
+        if (this.lvl < 7) {
+            val = this.crit[this.lvl - 1];
         } else {
-            if (lvl < 9) {
+            if (this.lvl < 9) {
                 val = this.crit[6];
             } else {
                 val = this.crit[7];
@@ -26,35 +28,45 @@ function Dwarf() {
         }
         return val;
     };
-    this.critTable = function(lvl) {
+    this.critTable = function() {
         var val = '';
-        if (lvl < 4) {
+        if (this.lvl < 4) {
             val = "III";
-        } else if (lvl < 6) {
+        } else if (this.lvl < 6) {
             val = "IV";
         } else {
             val = "V";
         }
         return val;
     };
-    this.getTitleList = function(alignment) {
+    this.getTitleList = function() {
         var titleList = [];
-        if (alignment == 'Chaotic') {
+        if (this.alignment == 'Chaotic') {
             titleList = this.titles.chaotic;
-        } else if (alignment == 'Lawful') {
+        } else if (this.alignment == 'Lawful') {
             titleList = this.titles.lawful;
-        } else if (alignment == 'Neutral') {
+        } else if (this.alignment == 'Neutral') {
             titleList = this.titles.neutral;
         }
         return titleList;
     };
-    this.attack = function(lvl) {
+    this.getTitle = function() {
+        var titles = this.getTitleList();
+        var val = ''; 
+        if (this.lvl >=5) {
+            val = titles[4];
+        } else if (this.lvl < 5) {
+            val = titles[this.lvl-1];
+        }   
+        return val;
+    }
+    this.attack = function() {
         var val = '';
         var attackChain = createDiceChain(3,10);
-        if (lvl < 7) {
-            val = attackChain[lvl-1];
+        if (this.lvl < 7) {
+            val = attackChain[this.lvl-1];
         } else {
-            var plus = Number(lvl) - 6;
+            var plus = Number(this.lvl) - 6;
             val = attackChain[6] + "+" + plus;
         }
         return val;
