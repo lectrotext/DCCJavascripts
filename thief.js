@@ -1,6 +1,7 @@
-function Thief() {
+function Thief(lvl, alignment) {
     this.cClass = "Thief";
-    this.lvl = null;
+    this.lvl = typeof lvl !== 'undefined' ? lvl : 1;
+    this.alignment = typeof alignment !== 'undefined' ? alignment : "Chaotic";
     this.speed = 30;
     this.saves = {
         ref: [1,1,2,2,3,4,4,5,5,6],
@@ -93,13 +94,13 @@ function Thief() {
     this.critTable = function() {
         return "II";
     };
-    this.getTitleList = function(alignment) {
+    this.getTitleList = function() {
         var titleList = [];
-        if (alignment == 'Chaotic') {
+        if (this.alignment == 'Chaotic') {
             titleList = this.titles.chaotic;
-        } else if (alignment == 'Lawful') {
+        } else if (this.alignment == 'Lawful') {
             titleList = this.titles.lawful;
-        } else if (alignment == 'Neutral') {
+        } else if (this.alignment == 'Neutral') {
             titleList = this.titles.neutral;
         }
         return titleList;
