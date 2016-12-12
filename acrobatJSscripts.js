@@ -42,6 +42,82 @@ function createDiceChain(to, from, add1d) {
     return diceChain;
 }
 
+function computeSaves(cClass, lvl, save) {
+    var cleric = {name:"Cleric",ref:"poor", fort:"average", will:"good"};
+    var dwarf = {name:"Dwarf",ref:"average", fort:"good", will:"average"};
+    var elf = {name:"Elf",ref:"average", fort:"average", will:"good"};
+    var halfling = {name:"Halfling",ref:"good", fort:"average", will:"good"};
+    var thief = {name:"Thief",ref:"good", fort:"average", will:"poor"};
+    var warrior = {name:"Warrior",ref:"average", fort:"good", will:"poor"};
+    var wizard = {name:"Wizard",ref:"average", fort:"poor", will:"good"};
+
+    var saveGroup = null;
+    switch (cClass) {
+        case cleric.name:
+            saveGroup = cleric;
+            break;
+        case dwarf.name:
+            saveGroup = dwarf;
+            break;
+        case elf.name:
+            saveGroup = elf;
+            break;
+        case halfling.name:
+            saveGroup = halfling;
+            break;
+        case thief.name:
+            saveGroup = thief;
+            break;
+        case warrior.name:
+            saveGroup = warrior;
+            break;
+        case wizard.name:
+            saveGroup = wizard;
+            break;
+        default:
+    }
+
+    var saveType = [];
+    switch (save) {
+        case "ref":
+            saveType = saveGroup.ref;
+            break;
+        case "fort":
+            saveType = saveGroup.fort;
+            break;
+        case "will":
+            saveType = saveGroup.will;
+            break;
+        default:
+    }
+    var progression = new SaveProgression();
+    var saves = progression.getSaves(saveType);
+
+    return saves[lvl-1];
+}
+
+function SaveProgression() {
+    this.good = [1,1,2,2,3,4,4,5,5,6];
+    this.avg = [1,1,1,2,2,2,3,3,3,4];
+    this.poor = [0,0,1,1,1,2,2,2,3,3];
+
+    this.getSaves = function(saveType) {
+        var val = [];
+        switch (saveType) {
+            case "good":
+                val = this.good;
+                break;
+            case "average":
+                val = this.avg;
+                break;
+            case "poor":
+                val = this.poor;
+                break;
+            default:
+        }
+        return val;
+    }
+}
 /**
  * @param cClass character class
  * @param lvl character level
@@ -236,8 +312,6 @@ function findCritDice(cClass, lvl, luckyCheck) {
         }
     }
 
-
-
     if (luckPlus != undefined) {
         if (cClass != 'Thief' && lvl <8) {
             if (luckPlus > 0) {
@@ -368,11 +442,11 @@ function LuckySign(luckySign) {
     };
 
     this.isMeleeAtkSign = function() {
-        return (this.luckySign == 2);
+        return (this.luckySign == 2 || this.isAllAtkSign());
     };
 
     this.isRangeAtkSign = function() {
-        return (this.luckySign == 3);
+        return (this.luckySign == 3 || this.isAllAtkSign());
     };
 
     this.isThiefSkillSign = function() {
@@ -416,17 +490,19 @@ function LuckySign(luckySign) {
     };
 
     this.isInitiativeSign = function() {
-        return (this.luckySign ==24);
+        return (this.luckySign == 24);
     };
 
     this.isCritTableSign = function() {
-        return (this.luckySign ==26);
+        return (this.luckySign == 26);
     };
 
     this.isSpeedSign = function() {
-        return (this.luckySign ==30);
+        return (this.luckySign == 30);
     };
 }
+
+
 
 
 // This is the hook that Adobe Acrobat uses to send event update.  If this were to be written for
@@ -440,7 +516,7 @@ if (event.willCommit) {
     // this is the export value ie - numeric
     var luckyCheck = new LuckySign(this.getField("LuckySign").value);
     if (luckyCheck.isLucky()) {
-        luckyCheck.luckMod = this.getField("BirthLuckModifer").value;
+        luckyCheck.luckMod = this.getField("BirthLuckModifier").value;
     }
     var alignment = this.getField("Alignment").value;
     // Fields affected by the Level changed event.
@@ -456,7 +532,7 @@ if (event.willCommit) {
     // Situational updates - class based.
     if (cClass == 'Dwarf' || cClass == 'Warrior') {
         var critTable = this.getField("CritTable");
-        critTable.value = findCritTable(cClass, lvl, luckyCheck);
+        critTable.value = findCritTable(cClass, lvl);
     }
     if (cClass == 'Warrior') {
         var critRange = this.getField("CritRange");
