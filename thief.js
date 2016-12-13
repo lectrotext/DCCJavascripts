@@ -14,70 +14,50 @@ function Thief(lvl, alignment) {
         neutral: ["Beggar", "Cutpurse", "Burglar", "Robber", "Swindler"]    
     };
     this.skills = {
-        backstab: {
-            chaotic: [3,5,7,8,9,11,12,13,14,15],
-            lawful: [1,3,5,7,8,9,10,11,12,13],
-            neutral: [0,1,2,3,4,5,6,7,8,9]
+        chaotic:{
+            backstab: [3,5,7,8,9,11,12,13,14,15],
+            sneak: [3,5,7,8,9,11,12,13,14,15],
+            hide: [1,3,5,7,8,9,10,11,12,13],
+            pickPocket: [0,1,2,3,4,5,6,7,8,9],
+            climb: [1,3,5,7,8,9,10,11,12,13],
+            pickLock: [1,3,5,7,8,9,10,11,12,13],
+            findTrap: [1,3,5,7,8,9,10,11,12,13],
+            disableTrap:[0,1,2,3,4,5,6,7,8,9],
+            forgery: [0,0,1,2,3,4,5,6,7,8],
+            disguise: [3,5,7,8,9,11,12,13,14,15],
+            readLanguages: [0,0,1,2,3,4,5,6,7,8],
+            handlePoison: [3,5,7,8,9,11,12,13,14,15],
+            castFromScroll: ["d10","d10","d12","d12","14","d14","d16","d16","d20","d20"]
         },
-        sneak: {
-            chaotic: [3,5,7,8,9,11,12,13,14,15],
-            lawful: [1,3,5,7,8,9,10,11,12,13],
-            neutral: [3,5,7,8,9,11,12,13,14,15]
+        lawful:{
+            backstab: [1,3,5,7,8,9,10,11,12,13],
+            sneak: [1,3,5,7,8,9,10,11,12,13],
+            hide: [3,5,7,8,9,11,12,13,14,15],
+            pickPocket: [1,3,5,7,8,9,10,11,12,13],
+            climb: [3,5,7,8,9,11,12,13,14,15],
+            pickLock: [1,3,5,7,8,9,10,11,12,13],
+            findTrap: [3,5,7,8,9,11,12,13,14,15],
+            disableTrap: [3,5,7,8,9,11,12,13,14,15],
+            forgery: [0,0,1,2,3,4,5,6,7,8],
+            disguise: [0,1,2,3,4,5,6,7,8,9],
+            readLanguages: [0,0,1,2,3,4,5,6,7,8],
+            handlePoison: [0,1,2,3,4,5,6,7,8,9],
+            castFromScroll: ["d10","d10","d12","d12","14","d14","d16","d16","d20","d20"]
         },
-        hide: {
-            chaotic: [1,3,5,7,8,9,10,11,12,13],
-            lawful: [3,5,7,8,9,11,12,13,14,15],
-            neutral: [1,3,5,7,8,9,10,11,12,13]
-        },
-        pickPocket: {
-            chaotic: [0,1,2,3,4,5,6,7,8,9],
-            lawful: [1,3,5,7,8,9,10,11,12,13],
-            neutral: [3,5,7,8,9,11,12,13,14,15]
-        },
-        climb: {
-            chaotic: [1,3,5,7,8,9,10,11,12,13],
-            lawful: [3,5,7,8,9,11,12,13,14,15],
-            neutral: [3,5,7,8,9,11,12,13,14,15]
-        },
-        pickLock: {
-            chaotic: [1,3,5,7,8,9,10,11,12,13],
-            lawful: [1,3,5,7,8,9,10,11,12,13],
-            neutral: [1,3,5,7,8,9,10,11,12,13]
-        },
-        findTrap: {
-            chaotic: [1,3,5,7,8,9,10,11,12,13],
-            lawful: [3,5,7,8,9,11,12,13,14,15],
-            neutral: [1,3,5,7,8,9,10,11,12,13]
-        },
-        DisableTrap: {
-            chaotic: [0,1,2,3,4,5,6,7,8,9],
-            lawful: [3,5,7,8,9,11,12,13,14,15],
-            neutral: [1,3,5,7,8,9,10,11,12,13]
-        },
-        forgeDoc: {
-            chaotic: [0,0,1,2,3,4,5,6,7,8],
-            lawful: [0,0,1,2,3,4,5,6,7,8],
-            neutral: [3,5,7,8,9,11,12,13,14,15]
-        },
-        disguiseSelf: {
-            chaotic: [3,5,7,8,9,11,12,13,14,15],
-            lawful: [0,1,2,3,4,5,6,7,8,9],
-            neutral: [0,0,1,2,3,4,5,6,7,8]
-        },
-        readLanguages: {
-            chaotic: [0,0,1,2,3,4,5,6,7,8],
-            lawful: [0,0,1,2,3,4,5,6,7,8],
-            neutral: [0,1,2,3,4,5,6,7,8,9]
-        },
-        handlePoison: {
-            chaotic: [3,5,7,8,9,11,12,13,14,15],
-            lawful: [0,1,2,3,4,5,6,7,8,9],
-            neutral: [0,0,1,2,3,4,5,6,7,8]
-        },
-        castFromScroll: {
-            chaotic: ["d10","d10","d12","d12","14","d14","d16","d16","d20","d20"],
-            lawful: ["d10","d10","d12","d12","14","d14","d16","d16","d20","d20"],
-            neutral: ["d12","d12","14","d14","d16","d16","d20","d20","d20","d20"]
+        neutral:{
+            backstab: [0,1,2,3,4,5,6,7,8,9],
+            sneak: [3,5,7,8,9,11,12,13,14,15],
+            hide: [1,3,5,7,8,9,10,11,12,13],
+            pickPocket: [3,5,7,8,9,11,12,13,14,15],
+            climb: [3,5,7,8,9,11,12,13,14,15],
+            pickLock: [1,3,5,7,8,9,10,11,12,13],
+            findTrap: [1,3,5,7,8,9,10,11,12,13],
+            disableTrap: [1,3,5,7,8,9,10,11,12,13],
+            forgery: [3,5,7,8,9,11,12,13,14,15],
+            disguise: [0,0,1,2,3,4,5,6,7,8],
+            readLanguages: [0,1,2,3,4,5,6,7,8,9],
+            handlePoison: [0,0,1,2,3,4,5,6,7,8],
+            castFromScroll: ["d12","d12","14","d14","d16","d16","d20","d20","d20","d20"]
         }
     };
     this.critDice = function() {
@@ -115,4 +95,58 @@ function Thief(lvl, alignment) {
         var diceChain = this.chain(3,16);
         return diceChain[this.lvl - 1];
     };
+    this.thiefSkill = function(skill) {
+        var skills = [];
+        if (this.alignment == 'Chaotic') {
+            skills = this.skills.chaotic;
+        } else if (this.alignment == 'Lawful') {
+            skills = this.skills.lawful;
+        } else if (this.alignment == 'Neutral') {
+            skills = this.skills.neutral;
+        }
+    
+        val = '';
+        switch (skill) {
+            case "Backstab"
+                val = skills.backstab[this.lvl -1];
+                break;
+            case "Sneak"
+                val = skills.sneak[this.lvl -1];
+                break;
+            case "Hide"
+                val = skills.hide[this.lvl -1];
+                break;
+            case "PickPockets"
+                val = skills.pickPockets[this.lvl -1];
+                break;
+            case "Climb"
+                val = skills.climb[this.lvl -1];
+                break;
+            case "PickLocks"
+                val = skills.pickLocks[this.lvl -1];
+                break;
+            case "FindTrap"
+                val = skills.findTrap[this.lvl -1];
+                break;
+            case "DisableTrap"
+                val = skills.disableTrap[this.lvl -1];
+                break;
+            case "ForgeDoc"
+                val = skills.forgery[this.lvl -1];
+                break;
+            case "DisguiseSelf"
+                val = skills.disguise[this.lvl -1];
+                break;
+            case "ReadLanguages"
+                val = skills.readLanguages[this.lvl -1];
+                break;
+            case "HandlePoison"
+                val = skills.handlePoison[this.lvl -1];
+                break;
+            case "CastScroll"
+                val = skills.castFromScroll[this.lvl -1];
+            default:
+        }
+        return val;
+    }
 }
