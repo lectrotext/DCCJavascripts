@@ -27,7 +27,7 @@ function Thief(lvl, alignment) {
             disguise: [3,5,7,8,9,11,12,13,14,15],
             readLanguages: [0,0,1,2,3,4,5,6,7,8],
             handlePoison: [3,5,7,8,9,11,12,13,14,15],
-            castFromScroll: ["d10","d10","d12","d12","14","d14","d16","d16","d20","d20"]
+            castFromScroll: [10,10,12,12,14,14,16,16,20,20]
         },
         lawful:{
             backstab: [1,3,5,7,8,9,10,11,12,13],
@@ -42,7 +42,7 @@ function Thief(lvl, alignment) {
             disguise: [0,1,2,3,4,5,6,7,8,9],
             readLanguages: [0,0,1,2,3,4,5,6,7,8],
             handlePoison: [0,1,2,3,4,5,6,7,8,9],
-            castFromScroll: ["d10","d10","d12","d12","14","d14","d16","d16","d20","d20"]
+            castFromScroll: [10,10,12,12,14,14,16,16,20,20]
         },
         neutral:{
             backstab: [0,1,2,3,4,5,6,7,8,9],
@@ -57,7 +57,7 @@ function Thief(lvl, alignment) {
             disguise: [0,0,1,2,3,4,5,6,7,8],
             readLanguages: [0,1,2,3,4,5,6,7,8,9],
             handlePoison: [0,0,1,2,3,4,5,6,7,8],
-            castFromScroll: ["d12","d12","14","d14","d16","d16","d20","d20","d20","d20"]
+            castFromScroll: [12,12,14,14,16,16,20,20,20,20]
         }
     };
     this.critDice = function() {
@@ -92,7 +92,7 @@ function Thief(lvl, alignment) {
         return val;
     };
     this.luckDie = function() {
-        var diceChain = this.chain(3,16);
+        var diceChain = this.chain(3,16,false);
         return diceChain[this.lvl - 1];
     };
     this.thiefSkill = function(skill) {
@@ -107,46 +107,47 @@ function Thief(lvl, alignment) {
     
         val = '';
         switch (skill) {
-            case "Backstab"
+            case "Backstab":
                 val = skills.backstab[this.lvl -1];
                 break;
-            case "Sneak"
+            case "Sneak":
                 val = skills.sneak[this.lvl -1];
                 break;
-            case "Hide"
+            case "Hide":
                 val = skills.hide[this.lvl -1];
                 break;
-            case "PickPockets"
-                val = skills.pickPockets[this.lvl -1];
+            case "PickPocket":
+                val = skills.pickPocket[this.lvl -1];
                 break;
-            case "Climb"
+            case "Climb":
                 val = skills.climb[this.lvl -1];
                 break;
-            case "PickLocks"
-                val = skills.pickLocks[this.lvl -1];
+            case "PickLock":
+                val = skills.pickLock[this.lvl -1];
                 break;
-            case "FindTrap"
+            case "FindTrap":
                 val = skills.findTrap[this.lvl -1];
                 break;
-            case "DisableTrap"
+            case "DisableTrap":
                 val = skills.disableTrap[this.lvl -1];
                 break;
-            case "ForgeDoc"
+            case "ForgeDoc":
                 val = skills.forgery[this.lvl -1];
                 break;
-            case "DisguiseSelf"
+            case "DisguiseSelf":
                 val = skills.disguise[this.lvl -1];
                 break;
-            case "ReadLanguages"
+            case "ReadLanguages":
                 val = skills.readLanguages[this.lvl -1];
                 break;
-            case "HandlePoison"
+            case "HandlePoison":
                 val = skills.handlePoison[this.lvl -1];
                 break;
-            case "CastScroll"
+            case "CastScroll":
                 val = skills.castFromScroll[this.lvl -1];
+                break;
             default:
         }
         return val;
-    }
+    };
 }
