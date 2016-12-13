@@ -74,17 +74,6 @@ function Thief(lvl, alignment) {
     this.critTable = function() {
         return "II";
     };
-    this.titleList = function() {
-        var titleList = [];
-        if (this.alignment == 'Chaotic') {
-            titleList = this.titles.chaotic;
-        } else if (this.alignment == 'Lawful') {
-            titleList = this.titles.lawful;
-        } else if (this.alignment == 'Neutral') {
-            titleList = this.titles.neutral;
-        }
-        return titleList;
-    };
     this.attack = function() {
         var val = this.lvl -1;
         if (this.lvl >= 4) { val -= 1; }
