@@ -67,12 +67,20 @@ function LuckySign(luckySign) {
         return (this.luckySign == 22);
     };
 
+    this.isArmorClassSign = function() {
+        return (this.luckySign == 23);
+    };
+
     this.isInitiativeSign = function() {
         return (this.luckySign == 24);
     };
 
     this.isCritTableSign = function() {
         return (this.luckySign == 26);
+    };
+
+    this.isFumbleSign = function() {
+        return (this.luckySign == 28);
     };
 
     this.isSpeedSign = function() {
