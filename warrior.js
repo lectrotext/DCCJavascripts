@@ -14,7 +14,7 @@ function Warrior(lvl, alignment) {
         neutral: ["Wildling", "Barbarian", "Berserker", "Headman/Headwoman", "Chieftain"]
     };
     this.critDice = function() {
-        var crit = this.chain(10);
+        var crit = this.chain(12);
         crit.push("2d20");
         var val = '';
         if (this.lvl < 6) {
