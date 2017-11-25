@@ -21,9 +21,9 @@ function Warrior(lvl, alignment) {
             val = crit[this.lvl - 1];
         } else {
             if (this.lvl < 8) {
-                val = crit[6];
+                val = crit[5];
             } else {
-                val = crit[7];
+                val = crit[6];
             }
         }
         return val;
