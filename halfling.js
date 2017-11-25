@@ -8,7 +8,7 @@ function Halfling(lvl) {
         will: [1,1,2,2,3,4,4,5,5,6]
     };
     this.titles = ["Wanderer", "Explorer", "Collector", "Accumulator", "Wise one"]; 
-    this.critDice = function(this.lvl) {
+    this.critDice = function() {
         var crit = this.chain(8,16);
         return crit[Math.floor((this.lvl - 1) / 2)];
     };
